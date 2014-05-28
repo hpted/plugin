@@ -242,14 +242,14 @@ function txl_booking_form (){
 	<input type="hidden" name="days" value="'.$days.'">
 	
 	<h4>my contact details</h4>
-	<table>
-	<tr><td></td><input type="radio" name="sex" value="Ms." checked="checked"> Ms. / <input type="radio" name="sex" value="Mr"> Mr.</td></tr>
-	<tr><td>full name: </td><td><input name="name" autofocus required><span></span></td></tr>
-	<tr><td>addres: </td><td><input name="addres" required><span></span></td></tr>
-	<tr><td>postcode: </td><td><input name="postcode" required><span></span></td></tr>
-	<tr><td>city: </td><td><input name="city" required><span></span></td></tr>
-	<tr><td>email: </td><td><input name="email" type="email" required><span></span></td></tr>
-	<tr><td>phone: </td><td><input name="phone" required><span></span></td></tr>
+	<table class="txl_clean_table">
+	<tr><td class="clean"><input type="radio" name="sex" value="Ms." checked="checked"> Ms. / <input type="radio" name="sex" value="Mr"> Mr.</td></tr>
+	<tr><td class="clean">full name: </td><td class="clean"><input name="name" autofocus required><span></span></td></tr>
+	<tr><td class="clean">addres: </td><td class="clean"><input name="addres" required><span></span></td></tr>
+	<tr><td class="clean">postcode: </td><td class="clean"><input name="postcode" required><span></span></td></tr>
+	<tr><td class="clean">city: </td><td class="clean"><input name="city" required><span></span></td></tr>
+	<tr><td class="clean">email: </td><td class="clean"><input name="email" type="email" required><span></span></td></tr>
+	<tr><td class="clean">phone: </td><td class="clean"><input name="phone" required><span></span></td></tr>
 	</table>
 
 	<p>my group is <select name="persons">
@@ -271,7 +271,7 @@ function txl_booking_form (){
 		echo '<tr><td class="extras_description"><input type="checkbox" name="extras[]" '.$readonly.' class="extracheckbox" value="'.$row['description'].'" data-price="'.$row['price'].'" data-perperson="'.$row['perperson'].'" data-perstay="'.$row['perstay'].'"> '.$row['description'] .'</td><td class="extras_price">'.number_format($row['price'],2).'</td><td class="extras_per">('.__( $row['perstay'], 'txl' ).', '.__($row['perperson'],'txl').') </td><td class="extras_subtotal"><input class="subtotal" name="'.$row['description'].'" readonly="readonly"></td></tr>';
 	}
 	
-	echo '<tr><td colspan="3" id="totalextras_text">total extras:</td"><td id="totalextras"> <input id="total" name="totalextras" readonly="readonly">
+	echo '<tr><td colspan="3" class="clean">total extras:</td"><td id="totalextras"> <input id="total" name="totalextras" readonly="readonly">
 	</table>
 	additional comments:<br>
 	<textarea name="comments"></textarea>

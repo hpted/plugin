@@ -1,4 +1,4 @@
-var start=true, startdate, enddate, globalmaxdate, occ;
+var start=true, startdate, enddate, globalmaxdate, occ, originalContent;
 
 jQuery(document).ready(function($) {
 
@@ -23,8 +23,11 @@ jQuery(document).ready(function($) {
 		$('#txl_prices_result, .perweekend').show()
 	})
 
-
-
+	realreadonly();
+	
+	function realreadonly(){
+		$('[readonly="readonly"]').focus(function(){$(this).blur()})
+	}
 
 
 
@@ -71,10 +74,18 @@ console.log($('#txl_start').val())
 		maxWidth:700,
         maxHeight: 700,
         width: 700,
-        height: 450,	
+        height: 450,
+        
+        open : function(event, ui) { 
+			originalContent = $("#txl_dialog").html();
+		},
+		close : function(event, ui) {
+			$("#txl_dialog").html(originalContent);
+			start=true;
+		}	
 	});
 	
-	}); //click
+	}); //txl_check click
 
 
 	
@@ -142,6 +153,8 @@ function txl_dialog_datepicker_fn(){
 				start: startdate,
 				end: enddate
 		},function(){
+			realreadonly();
+		
 			$('.extracheckbox').each(function(){
 				calc_extras($(this));
 			})			
@@ -188,10 +201,10 @@ function calc_extras(thisone){
 	subtotal=Math.round(subtotal*100)/100;
 	console.log(thisone.prop('checked') )
 	if (thisone.is(':checked')){
-		thisone.parents(0).children('.subtotal').val(subtotal.toFixed(2));
+		thisone.parents('tr').find('.subtotal').val(subtotal.toFixed(2));
 	}
 	else{
-		thisone.parents(0).children('.subtotal').val('');
+		thisone.parents('tr').find('.subtotal').val('');
 	}
 	$('.subtotal').each(function(){
 		if(!isNaN($(this).val())){

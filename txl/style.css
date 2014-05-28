@@ -17,6 +17,6 @@ input [type='number'] {text-align: right}
 .txl_clean_table {border: none; width: 30em}
 
 td.extras_price, td.extras_subtotal, #totalextras {width: 3em; border: none; text-align: right;}
-#totalextras_text {border: none}
+td.clean {border: none}
 td.extras_description {width: 15em; border: none;}
 td.extras_per {width: 32em; border: none; font-size: 0.8em; padding-left: 2em}
