@@ -1,0 +1,13 @@
+#txl_dialog, #txl_booknow {display: none}
+
+.myselected a {color: #0000ff !important;}
+
+.ui-dialog { z-index: 1000 !important ;}
+
+input [type='number'] {text-align: right}
+
+.error {color: #ff0000}
+
+#txl_prices_result {display: none}
+
+.txl_btn, #txl_different_period {text-decoration:underline; cursor: pointer;}
