@@ -11,3 +11,12 @@ input [type='number'] {text-align: right}
 #txl_prices_result {display: none}
 
 .txl_btn, #txl_different_period {text-decoration:underline; cursor: pointer;}
+
+.subtotal, #total {border: none; width: 5em; }
+
+.txl_clean_table {border: none; width: 30em}
+
+td.extras_price, td.extras_subtotal, #totalextras {width: 3em; border: none; text-align: right;}
+#totalextras_text {border: none}
+td.extras_description {width: 15em; border: none;}
+td.extras_per {width: 32em; border: none; font-size: 0.8em; padding-left: 2em}

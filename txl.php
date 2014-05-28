@@ -34,6 +34,13 @@ function txl_deactivation() {
 }
 register_deactivation_hook(__FILE__, 'txl_deactivation');
 
+
+function txl_init() {
+  load_plugin_textdomain( 'txl', false, 'txl/languages' );
+}
+add_action('init', 'txl_init');
+
+
 add_action( 'admin_menu', 'register_my_custom_menu_page' );
 
 function register_my_custom_menu_page(){
@@ -256,15 +263,16 @@ function txl_booking_form (){
 	</select> persons</p>
 	
 	<h4>extra\'s</h4>
+	<table class="txl_clean_table">
 	';
 	
 	foreach ($txl_extras as $key=>$row){
 		if (strrpos($row['required'],'not')===0) {$readonly='';} else {$readonly='  style="visibility:hidden" checked ';}  
-		echo '<p><input type="checkbox" name="extras[]" '.$readonly.' class="extracheckbox" value="'.$row['description'].'" data-price="'.$row['price'].'" data-perperson="'.$row['perperson'].'" data-perstay="'.$row['perstay'].'"> '.$row['description'] .' '.number_format($row['price'],2).' ('.$row['perstay'].', '.$row['perperson'].') <input class="subtotal" name="'.$row['description'].'" readonly></p>';
+		echo '<tr><td class="extras_description"><input type="checkbox" name="extras[]" '.$readonly.' class="extracheckbox" value="'.$row['description'].'" data-price="'.$row['price'].'" data-perperson="'.$row['perperson'].'" data-perstay="'.$row['perstay'].'"> '.$row['description'] .'</td><td class="extras_price">'.number_format($row['price'],2).'</td><td class="extras_per">('.__( $row['perstay'], 'txl' ).', '.__($row['perperson'],'txl').') </td><td class="extras_subtotal"><input class="subtotal" name="'.$row['description'].'" readonly="readonly"></td></tr>';
 	}
 	
-	echo 'total extras: <input id="total" name="totalextras" readonly>
-	<br>
+	echo '<tr><td colspan="3" id="totalextras_text">total extras:</td"><td id="totalextras"> <input id="total" name="totalextras" readonly="readonly">
+	</table>
 	additional comments:<br>
 	<textarea name="comments"></textarea>
 	
@@ -274,6 +282,15 @@ function txl_booking_form (){
 	die();
 	
 } //txl_booking_form
+
+function onlytofillpofile(){
+// sorry about this. I do not know any other way to get these entries in the .po file 
+
+	_e('per stay', txl);
+	_e('per day', txl);
+	_e('per group', txl);
+	_e('per person', txl);
+}//onlytofillpofile
 
 function txl_get_occ(){
 	
@@ -455,22 +472,25 @@ add_action( 'wp_ajax_nopriv_txl_booking_form', 'txl_booking_form' );
 add_action( 'wp_ajax_txl_booking_final_send', 'txl_booking_final_send' );
 add_action( 'wp_ajax_nopriv_txl_booking_final_send', 'txl_booking_final_send' );
 
-add_action( 'init', 'register_cpt_booking' );
+
+
+
+add_action( 'init', 'register_txl_booking' );
     
-function register_cpt_booking() {
+function register_txl_booking() {
     $labels = array(
-    'name' => _x( 'Bookings', 'booking' ),
-    'singular_name' => _x( 'Booking', 'booking' ),
-    'add_new' => _x( 'Add New', 'booking' ),
-    'add_new_item' => _x( 'Add New Booking', 'booking' ),
-    'edit_item' => _x( 'Edit Booking', 'booking' ),
-    'new_item' => _x( 'New Booking', 'booking' ),
-    'view_item' => _x( 'View Booking', 'booking' ),
-    'search_items' => _x( 'Search Bookings', 'booking' ),
-    'not_found' => _x( 'No bookings found', 'booking' ),
-    'not_found_in_trash' => _x( 'No bookings found in Trash', 'booking' ),
-    'parent_item_colon' => _x( 'Parent Booking:', 'booking' ),
-    'menu_name' => _x( 'Bookings', 'booking' ),
+    'name' => 'Bookings',
+    'singular_name' => 'Booking',
+    'add_new' => 'Add New',
+    'add_new_item' => 'Add New Booking',
+    'edit_item' => 'Edit Booking',
+    'new_item' => 'New Booking',
+    'view_item' => 'View Booking',
+    'search_items' => 'Search Bookings',
+    'not_found' =>  'No bookings found',
+    'not_found_in_trash' => 'No bookings found in Trash',
+    'parent_item_colon' => 'Parent Booking:',
+    'menu_name' => 'Bookings',
     );
     $args = array(
     'labels' => $labels,
