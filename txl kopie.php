@@ -63,9 +63,6 @@ function txl_enqueue_style() {
 function txl_enqueue_script() {
 	wp_enqueue_script('jquery-ui-datepicker');
 	wp_enqueue_script('jquery-ui-dialog');
-	
-	//wp_enqueue_script('datepicker-nl', plugins_url('/txl/datepicker-nl.js'), false );
-	wp_enqueue_script('jquery-ui-i18n', 'http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js', false );
 	wp_enqueue_script('txl_js', plugins_url('/txl/front-end.js'), false );
 
 	wp_localize_script( 'txl_js', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'we_value' => 1234 ) );
@@ -98,8 +95,8 @@ function txl_insert_here(){
 
 	$txl_prices_table.='</table>';
 
-	return '<label for="txl_start">van</label><input name="txl_start" id="txl_start">
-			<label>tot</label><input name="txl_end" id="txl_end"><br>
+	return '<label for="txl_start">van</label><input type="date" name="txl_start" id="txl_start">
+			<label>tot</label><input type="date" name="txl_end" id="txl_end"><br>
 			<button id="txl_check">check live beschikbaarheid en prijs</button>
 			<div id="txl_dialog" class="wp-dialog">
 				<div id="txl_dialog_msg"></div>
@@ -129,7 +126,7 @@ function txl_ajax(){
 	$start=$_POST['start'];
 	$end=$_POST['end'];
 	
-	if (!(is_numeric($start)&&is_numeric($end))){
+	if (!($start&&$end)){
 		$txl_msg='Choose a start date and an end date';
 		$txl_error=true;
 	}
@@ -200,11 +197,7 @@ function txl_ajax(){
 	
 	if (!$txl_error){
 		$costa=costa($start,$end);
-		$days=($end-$start)/(60*60*24);
-		
-		txl_settimezone();
-		
-		$txl_msg.='Success! The period from '.date('l, j F Y ', $start).' till '. date('l, j F Y ', $end).' ('.$days.' days) is available. Rent is '.$costa.'<p>(you can also <span id="txl_different_period">select a different period</span>)</p>';
+		$txl_msg.='Success! This period is available. Rent is '.$costa.'<p>(you can also <span id="txl_different_period">select a different period</span>)</p>';
 	}
 	else{
 		$txl_msg=$txl_msg.'<br>Select a different period.<br>(Holidays start and end on Monday or Friday)';
@@ -231,8 +224,6 @@ function txl_booking_form (){
 	$start=$_POST['start'];
 	$end=$_POST['end'];
 	$days=($end-$start)/(60*60*24);
-	
-	txl_settimezone();
 	
 	$txl_extras=get_option('txl_extra');
 	
@@ -450,11 +441,8 @@ function txl_booking_final_send(){
 		'Your holiday is from '.$_POST['start'].' till '.$_POST['end']. "\r\n" .
 		'Your rent is '.$rent.'.'. "\r\n" . "\r\n".
 		'The following costs are paid to the concierge:'."\r\n".
-		$txl_message."\r\n"."\r\n";
-		
-	if (strlen($_POST['comments'].'')>0){
-		$txl_message.='You had these additional comments:'."\r\n".$_POST['comments'];
-	}
+		$txl_message."\r\n"."\r\n".
+		'Your had these additional comments:'."\r\n".$_POST['comments'];
 
 	$txl_to=$_POST['email'];
 	if (!is_email($txl_to)){
@@ -614,11 +602,4 @@ function flip($arr)
 
 function makedecimals($in, $decimals){
 	return number_format((float)$in, $decimals, '.', '');
-}
-
-function txl_settimezone(){
-	$timezoneoffset=$_POST['timezoneoffset'];
-	if ($timezoneoffset>0){$timezoneoffset='+'.$timezoneoffset;}
-	$timezoneoffset='Etc/GMT'.$timezoneoffset;
-	date_default_timezone_set($timezoneoffset);
 }

@@ -2,11 +2,19 @@ var start=true, startdate, enddate, globalmaxdate, occ, originalContent;
 
 jQuery(document).ready(function($) {
 
-	$('input[type="date"]').datepicker({
-        //dateFormat : 'd-m-yy'
+	$.datepicker.setDefaults( $.datepicker.regional[ "nl" ] );    
+
+	$('#txl_start, #txl_end').datepicker({
+        dateFormat : 'd MM yy',
+        onSelect: function(mydate, field){
+        	myrealdate=parsefield(field)
+        	console.log (myrealdate)
+        	if(field.id=='txl_start'){startdate=myrealdate;}
+        	if(field.id=='txl_end'){enddate=myrealdate;}
+        }//onSelect
     }); //datepicker
     
-	$('input[type="date"]').attr('readonly', 'readonly');
+	$('#txl_start, #txl_end').attr('readonly', 'readonly');
 
 	$('#txl_btn_perweek').click(function(){
 		$('.perweekend, .permidweek').hide();
@@ -34,12 +42,14 @@ jQuery(document).ready(function($) {
 	$( "#txl_check" ).click(function() {
 		$("#txl_dialog_msg").html('prijs en beschikbaarheid worden gecheckt');
 
-console.log($('#txl_start').val())
+		//console.log($('#txl_start').val())
 
-		startdate=jQuery.datepicker.formatDate('@',new Date($('#txl_start').val()))/1000;
+		//startdate=jQuery.datepicker.formatDate('@',new Date($('#txl_start').val()))/1000;
+		//startdate=Date.UTC(new Date($('#txl_start').val()))/1000;
 		startdate=findchangeday(startdate,-1)
 
-		enddate=jQuery.datepicker.formatDate('@',new Date($('#txl_end').val()))/1000;
+		//enddate=jQuery.datepicker.formatDate('@',new Date($('#txl_end').val()))/1000;
+		//enddate=Date.UTC(new Date($('#txl_end').val()))/1000;
 		if(enddate==startdate){enddate+=(24*60*60);}
 		enddate=findchangeday(enddate,1)
 		
@@ -49,7 +59,8 @@ console.log($('#txl_start').val())
 			data: {
 				action: 'txl_ajax',
 				start: startdate,
-				end: enddate
+				end: enddate,
+				timezoneoffset: ((new Date).getTimezoneOffset())/60
 			},
 			dataType: "json",
 			success : function(data) {
@@ -112,7 +123,7 @@ function txl_dialog_datepicker_fn(){
 			if (start){
 				var mymaxdate=globalmaxdate;
 				
-				startdate=jQuery.datepicker.formatDate('@',new Date(mydate))/1000;
+				startdate=parsefield(field)
 				startdate=findchangeday(startdate,-1)
 				$('#txl_dialog_msg').html('start: '+jQuery.datepicker.formatDate('DD, d MM yy', new Date (startdate*1000)));
 				$('#txl_booknow').hide()
@@ -130,7 +141,7 @@ function txl_dialog_datepicker_fn(){
 			else
 			{
 				
-				enddate=jQuery.datepicker.formatDate('@', $(this).datepicker( 'getDate' ))/1000;
+				enddate=parsefield(field)
 				if(enddate==startdate){enddate+=(24*60*60);}
 				enddate=findchangeday(enddate,1)
 				$('#txl_dialog_msg').html('start: '+jQuery.datepicker.formatDate('DD, d MM yy', new Date (startdate*1000))+
@@ -151,7 +162,8 @@ function txl_dialog_datepicker_fn(){
 		$('#txl_dialog').load(ajax_object.ajax_url,{
 				action: 'txl_booking_form',
 				start: startdate,
-				end: enddate
+				end: enddate,
+				timezoneoffset: ((new Date).getTimezoneOffset())/60
 		},function(){
 			realreadonly();
 		
@@ -233,4 +245,8 @@ function findchangeday(timestamp,direction){
 function isValidEmailAddress(emailAddress) {
     var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
     return pattern.test(emailAddress);
-};
+}
+
+function parsefield(field){
+	return ((Date.parse(field.selectedYear+','+((field.selectedMonth*1)+1)+','+field.selectedDay))/1000);
+}

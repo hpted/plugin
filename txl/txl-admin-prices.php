@@ -9,7 +9,7 @@ if ($_REQUEST['submitted']){
 
 	array_multisort($txl_real_date, $txl_date, $txl_week, $txl_weekend, $txl_midweek);	
 
-	update_option('txl_real_date',$txl_date);
+	update_option('txl_real_date',$txl_real_date);
 	update_option('txl_date',$txl_date);
 	update_option('txl_week',$txl_week);
 	update_option('txl_weekend',$txl_weekend);
