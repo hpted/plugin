@@ -84,7 +84,7 @@ function txl_insert_here(){
 	$txl_midweek=get_option('txl_midweek');
 	$txl_date_count=count($txl_date)-1;
 
-	$txl_prices_table='<table id="txl_prices_result"><tr><th>van</th><th>tot</th><th class="perweek">week</th><th class="perweekend">weekend</th><th class="permidweek">midweek</th></tr>';
+	$txl_prices_table='<table id="txl_prices_result"><tr><th>'.__('from', txl).'</th><th>'.__('till', txl).'</th><th class="perweek">'.__('week', txl).'</th><th class="perweekend">'.__('weekend', txl).'</th><th class="permidweek">'.__('midweek', txl).'</th></tr>';
 	foreach ($txl_date as $key => $value){
 		if ($key<$txl_date_count){
 			$txl_till=$txl_date[$key+1];
@@ -100,20 +100,34 @@ function txl_insert_here(){
 
 	return '<label for="txl_start">van</label><input name="txl_start" id="txl_start">
 			<label>tot</label><input name="txl_end" id="txl_end"><br>
-			<button id="txl_check">check live beschikbaarheid en prijs</button>
-			<div id="txl_dialog" class="wp-dialog">
+			<button id="txl_check">'.__('Check live availablilty and price', txl).'</button>
+			
+			<div id="txl_dialog" class="wp-dialog" title="'.__('Your holiday', txl).'">
+
 				<div id="txl_dialog_msg"></div>
 				<div id="txl_dialog_datepicker"></div>
-				<div id="txl_showprices">toon prijzen per 
-					<span id="txl_btn_perweek" class="txl_btn">week</span>/
-					<span id="txl_btn_perweekend" class="txl_btn">weekend</span>/
-					<span id="txl_btn_permidweek" class="txl_btn">midweek</span>
+				
+				<div id="txl_price"></div>
+				<button id="txl_booknow">book now!</button>					
+				
+				<div id="txl_showprices">'.__('Show prices per', txl).'
+					<span id="txl_btn_perweek" class="txl_btn">'.__('week', txl).'</span>/
+					<span id="txl_btn_perweekend" class="txl_btn">'.__('weekend', txl).'</span>/
+					<span id="txl_btn_permidweek" class="txl_btn">'.__('midweek', txl).'</span>
 				'.$txl_prices_table.'
 				</div>
 				
 				
-				<button id="txl_booknow">book now!</button>
-			</div>' ;
+		
+			
+			
+			<div id="txl_dialog_final">
+			
+			
+			
+			</div><!-- .final-->
+		
+			</div> <!-- .dialog-->' ;
 }
 
 add_shortcode( 'bookable', 'txl_insert_here' );
@@ -227,6 +241,16 @@ function txl_ajax(){
 
 }//txl_ajax
 
+
+function txl_get_price(){
+	$start=$_POST['start'];
+	$end=$_POST['end'];
+	txl_settimezone();
+	
+	echo __('rent for this period: ',txl).costa($start, $end);
+	die();
+}
+
 function txl_booking_form (){
 	$start=$_POST['start'];
 	$end=$_POST['end'];
@@ -250,15 +274,17 @@ function txl_booking_form (){
 	<input type="hidden" name="booking_date" value="'. date('j F Y ', 0).'">
 	<input type="hidden" name="days" value="'.$days.'">
 	
-	<h4>my contact details</h4>
+	<div id="txl_back">&lt; '.__('back',txl).'</div>
+	
+	<h4>'.__('my contact details',txl).'</h4>
 	<table class="txl_clean_table">
-	<tr><td class="clean"><input type="radio" name="sex" value="Ms." checked="checked"> Ms. / <input type="radio" name="sex" value="Mr"> Mr.</td></tr>
-	<tr><td class="clean">full name: </td><td class="clean"><input name="name" autofocus required><span></span></td></tr>
-	<tr><td class="clean">addres: </td><td class="clean"><input name="addres" required><span></span></td></tr>
-	<tr><td class="clean">postcode: </td><td class="clean"><input name="postcode" required><span></span></td></tr>
-	<tr><td class="clean">city: </td><td class="clean"><input name="city" required><span></span></td></tr>
-	<tr><td class="clean">email: </td><td class="clean"><input name="email" type="email" required><span></span></td></tr>
-	<tr><td class="clean">phone: </td><td class="clean"><input name="phone" required><span></span></td></tr>
+	<tr><td class="clean"><input type="radio" name="sex" value="Ms." checked="checked"> '.__('Ms.',txl).' / <input type="radio" name="sex" value="Mr"> '.__('Mr.',txl).'</td></tr>
+	<tr><td class="clean">'.__('full name',txl).': </td><td class="clean"><input name="name" autofocus required><span></span></td></tr>
+	<tr><td class="clean">'.__('addres',txl).': </td><td class="clean"><input name="addres" required><span></span></td></tr>
+	<tr><td class="clean">'.__('postcode',txl).': </td><td class="clean"><input name="postcode" required><span></span></td></tr>
+	<tr><td class="clean">'.__('city',txl).': </td><td class="clean"><input name="city" required><span></span></td></tr>
+	<tr><td class="clean">'.__('email',txl).': </td><td class="clean"><input name="email" type="email" required><span></span></td></tr>
+	<tr><td class="clean">'.__('phone',txl).': </td><td class="clean"><input name="phone" required><span></span></td></tr>
 	</table>
 
 	<p>my group is <select name="persons">
@@ -486,8 +512,8 @@ add_action( 'wp_ajax_nopriv_txl_booking_form', 'txl_booking_form' );
 add_action( 'wp_ajax_txl_booking_final_send', 'txl_booking_final_send' );
 add_action( 'wp_ajax_nopriv_txl_booking_final_send', 'txl_booking_final_send' );
 
-
-
+add_action( 'wp_ajax_txl_get_price', 'txl_get_price' );
+add_action( 'wp_ajax_nopriv_txl_get_price', 'txl_get_price' );
 
 add_action( 'init', 'register_txl_booking' );
     

@@ -1,4 +1,6 @@
-#txl_dialog, #txl_booknow {display: none}
+#txl_dialog {display: none}
+
+#txl_dialog_final {position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: none; background: #fff;}
 
 .myselected a {color: #0000ff !important;}
 
@@ -20,3 +22,4 @@ td.extras_price, td.extras_subtotal, #totalextras {width: 3em; border: none; tex
 td.clean {border: none}
 td.extras_description {width: 15em; border: none;}
 td.extras_per {width: 32em; border: none; font-size: 0.8em; padding-left: 2em}
+

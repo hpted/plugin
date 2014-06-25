@@ -6,9 +6,10 @@ jQuery(document).ready(function($) {
 
 	$('#txl_start, #txl_end').datepicker({
         dateFormat : 'd MM yy',
+        minDate: 0,
         onSelect: function(mydate, field){
         	myrealdate=parsefield(field)
-        	console.log (myrealdate)
+        	//console.log (myrealdate)
         	if(field.id=='txl_start'){startdate=myrealdate;}
         	if(field.id=='txl_end'){enddate=myrealdate;}
         }//onSelect
@@ -42,15 +43,9 @@ jQuery(document).ready(function($) {
 	$( "#txl_check" ).click(function() {
 		$("#txl_dialog_msg").html('prijs en beschikbaarheid worden gecheckt');
 
-		//console.log($('#txl_start').val())
-
-		//startdate=jQuery.datepicker.formatDate('@',new Date($('#txl_start').val()))/1000;
-		//startdate=Date.UTC(new Date($('#txl_start').val()))/1000;
 		startdate=findchangeday(startdate,-1)
 
-		//enddate=jQuery.datepicker.formatDate('@',new Date($('#txl_end').val()))/1000;
-		//enddate=Date.UTC(new Date($('#txl_end').val()))/1000;
-		if(enddate==startdate){enddate+=(24*60*60);}
+		if(enddate<=startdate){enddate=startdate+(24*60*60);}
 		enddate=findchangeday(enddate,1)
 		
 		$.ajax({
@@ -72,7 +67,6 @@ jQuery(document).ready(function($) {
 					txl_dialog_datepicker_fn();
 				} 
 				else{
-					$('#txl_booknow').show()
 					$('#txl_different_period').click(function(){
 						txl_dialog_datepicker_fn();
 					})
@@ -87,11 +81,9 @@ jQuery(document).ready(function($) {
         width: 700,
         height: 450,
         
-        open : function(event, ui) { 
-			originalContent = $("#txl_dialog").html();
-		},
+
 		close : function(event, ui) {
-			$("#txl_dialog").html(originalContent);
+			$("#txl_dialog_final").hide();
 			start=true;
 		}	
 	});
@@ -146,6 +138,14 @@ function txl_dialog_datepicker_fn(){
 				enddate=findchangeday(enddate,1)
 				$('#txl_dialog_msg').html('start: '+jQuery.datepicker.formatDate('DD, d MM yy', new Date (startdate*1000))+
 					' end: '+jQuery.datepicker.formatDate('DD, d MM yy', new Date (enddate*1000)));
+				
+				$('#txl_price').load(ajax_object.ajax_url,{
+					action: 'txl_get_price',
+					start: startdate,
+					end: enddate,
+					timezoneoffset: ((new Date).getTimezoneOffset())/60
+				})	
+					
 				$('#txl_booknow').show()
 				
 				$(this).datepicker("option", "minDate",0);
@@ -159,13 +159,21 @@ function txl_dialog_datepicker_fn(){
 } //step2datepicker
 	
 	$('#txl_booknow').click(function(){
-		$('#txl_dialog').load(ajax_object.ajax_url,{
+	
+		$('#txl_dialog_final').load(ajax_object.ajax_url,{
 				action: 'txl_booking_form',
 				start: startdate,
 				end: enddate,
 				timezoneoffset: ((new Date).getTimezoneOffset())/60
 		},function(){
+			$('#txl_dialog_final').show()
+			
 			realreadonly();
+		
+			$('#txl_back').click(function(){
+				console.log(' :-)' )
+				$('#txl_dialog_final').hide()
+			})
 		
 			$('.extracheckbox').each(function(){
 				calc_extras($(this));

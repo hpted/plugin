@@ -1,0 +1,67 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: txl booking\n"
+"POT-Creation-Date: 2014-06-16 20:24+0100\n"
+"PO-Revision-Date: 2014-06-16 20:25+0100\n"
+"Last-Translator: hanspeter van leeuwen <h@nspeter.nl>\n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: txl kopie.php:289 txl.php:298
+msgid "per stay"
+msgstr "per verblijf"
+
+#: txl kopie.php:290 txl.php:299
+msgid "per day"
+msgstr "per dag"
+
+#: txl kopie.php:291 txl.php:300
+msgid "per group"
+msgstr "per groep"
+
+#: txl kopie.php:292 txl.php:301
+msgid "per person"
+msgstr "per persoon"
+
+#: txl.php:87
+msgid "from"
+msgstr "van"
+
+#: txl.php:87
+msgid "till"
+msgstr "tot"
+
+#: txl.php:87 txl.php:108
+msgid "week"
+msgstr "week"
+
+#: txl.php:87 txl.php:109
+msgid "weekend"
+msgstr "weekend"
+
+#: txl.php:87 txl.php:110
+msgid "midweek"
+msgstr "midweek"
+
+#: txl.php:103
+msgid "Check live availablilty and price"
+msgstr "Check live beschikbaarheid en prijs"
+
+#: txl.php:104
+msgid "Your holiday"
+msgstr "Uw vakantie"
+
+#: txl.php:107
+msgid "Show prices per"
+msgstr "Toon prijzen per"
