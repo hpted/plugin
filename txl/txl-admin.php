@@ -86,12 +86,12 @@ jQuery(document).ready(function($) {
 <div style="max-width: 80em;">
 <br><br>
 Mail text:<br>
-<? echo wp_editor( get_option('txl_mail_text'), 'txl_mail_text', array('textarea_name' => 'txl_mail_text', 'teeny' => true, 'media_buttons' => false)  );?>
+<?= wp_editor( get_option('txl_mail_text'), 'txl_mail_text', array('textarea_name' => 'txl_mail_text', 'teeny' => true, 'media_buttons' => false)  )?>
 <br><br>
 
 Success text:<br>
 <div style="max-width: 80em;">
-<? echo wp_editor( get_option('txl_success_text'), 'txl_success_text', array('textarea_name' => 'txl_success_text', 'teeny' => true, 'media_buttons' => false)  );?>
+<?= wp_editor( get_option('txl_success_text'), 'txl_success_text', array('textarea_name' => 'txl_success_text', 'teeny' => true, 'media_buttons' => false)  )?>
 </div>
 <br>
 <input type="submit" name="submitted" value="submit" class="button action">    

@@ -1,9 +1,11 @@
-var start=true, startdate, enddate, globalmaxdate, occ, originalContent;
+var start=true, startdate, enddate, globalmaxdate, occ;
 
 jQuery(document).ready(function($) {
 
 	$.datepicker.setDefaults( $.datepicker.regional[ "nl" ] );    
 
+	txl_reset();
+	
 	$('#txl_start, #txl_end').datepicker({
         dateFormat : 'd MM yy',
         minDate: 0,
@@ -84,7 +86,7 @@ jQuery(document).ready(function($) {
 
 		close : function(event, ui) {
 			$("#txl_dialog_final").hide();
-			start=true;
+			txl_reset();
 		}	
 	});
 	
@@ -235,9 +237,13 @@ function calc_extras(thisone){
 	
 }//calc_extras
 
-
+function txl_reset(){
+	$('#txl_start, #txl_end').val('');
+	start=true
+	}
 
 }) //jquery
+
 
 
 function findchangeday(timestamp,direction){

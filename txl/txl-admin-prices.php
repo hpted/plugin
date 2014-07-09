@@ -80,7 +80,7 @@ border-color: #DDDDDD;
 <form method="post" id="txl_form">
 <table id="txl_table">
 <tr><th>datum</th><th>week</th><th>weekend</th><th>midweek</th></tr>
-<?
+<?php
 foreach ($txl_date as $key => $value){
 ?>
 	<tr>
@@ -90,7 +90,7 @@ foreach ($txl_date as $key => $value){
 		<td><input name="txl_midweek[]" value="<?=$txl_midweek[$key]?>" type="number"></td>
 		<td><input type="button" value="-" class="deleterow button action"/></td>
 	</tr>
-<?
+<?php
 }
 ?>
 

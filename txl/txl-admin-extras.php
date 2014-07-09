@@ -64,7 +64,7 @@ $('body').on('change', '[type="number"]', function (event){
 <form method="post" id="txl_form">
 <table id="txl_table">
 <tr><th>description</th><th>price</th><th>required?</th><th>per person?</th><th>per day?</th></tr>
-<?
+<?php
 foreach ($txl_extras as $row){
 ?>
 	<tr>
@@ -90,7 +90,7 @@ foreach ($txl_extras as $row){
 		</td>
 		<td><input type="button" value="-" class="deleterow button action"/></td>
 	</tr>
-<?
+<?php
 }
 ?>
 
@@ -101,14 +101,3 @@ foreach ($txl_extras as $row){
     
 <input type="submit" name="submitted" value="ok" class="button action">    
 </form>
-
-
-<!--
-to do:
-alles
-
-
-
-
-
--->

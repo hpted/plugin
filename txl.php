@@ -36,7 +36,8 @@ register_deactivation_hook(__FILE__, 'txl_deactivation');
 
 
 function txl_init() {
-  load_plugin_textdomain( 'txl', false, 'txl/languages' );
+  load_plugin_textdomain( 'txl', false, plugin_basename('txl/languages') );
+
 }
 add_action('init', 'txl_init');
 
