@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: txl booking\n"
-"POT-Creation-Date: 2014-06-16 20:24+0100\n"
-"PO-Revision-Date: 2014-06-16 20:25+0100\n"
+"POT-Creation-Date: 2014-07-13 14:59+0100\n"
+"PO-Revision-Date: 2014-07-13 15:00+0100\n"
 "Last-Translator: hanspeter van leeuwen <h@nspeter.nl>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -18,50 +18,170 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: txl kopie.php:289 txl.php:298
+#: txl kopie.php:289 txl.php:325
 msgid "per stay"
 msgstr "per verblijf"
 
-#: txl kopie.php:290 txl.php:299
+#: txl kopie.php:290 txl.php:326
 msgid "per day"
 msgstr "per dag"
 
-#: txl kopie.php:291 txl.php:300
+#: txl kopie.php:291 txl.php:327
 msgid "per group"
 msgstr "per groep"
 
-#: txl kopie.php:292 txl.php:301
+#: txl kopie.php:292 txl.php:328
 msgid "per person"
 msgstr "per persoon"
 
-#: txl.php:87
+#: txl.php:88 txl.php:102 txl.php:267
 msgid "from"
 msgstr "van"
 
-#: txl.php:87
+#: txl.php:88 txl.php:103 txl.php:267
 msgid "till"
 msgstr "tot"
 
-#: txl.php:87 txl.php:108
+#: txl.php:88 txl.php:115
 msgid "week"
 msgstr "week"
 
-#: txl.php:87 txl.php:109
+#: txl.php:88 txl.php:116
 msgid "weekend"
 msgstr "weekend"
 
-#: txl.php:87 txl.php:110
+#: txl.php:88 txl.php:117
 msgid "midweek"
 msgstr "midweek"
 
-#: txl.php:103
+#: txl.php:104
 msgid "Check live availablilty and price"
 msgstr "Check live beschikbaarheid en prijs"
 
-#: txl.php:104
+#: txl.php:106
 msgid "Your holiday"
 msgstr "Uw vakantie"
 
-#: txl.php:107
+#: txl.php:114
 msgid "Show prices per"
 msgstr "Toon prijzen per"
+
+#: txl.php:148
+msgid "Choose a start date and an end date"
+msgstr "Kies een begindatum en een einddatum"
+
+#: txl.php:170 txl.php:191 txl.php:210
+msgid "Selected period is not available."
+msgstr "Geselecteerde periode is niet beschikbaar."
+
+#: txl.php:222
+msgid "Success! The period from "
+msgstr "Succes! De periode van "
+
+#: txl.php:222
+msgid " till "
+msgstr " tot "
+
+#: txl.php:222
+msgid " days) is available. Rent is "
+msgstr " dagen)  is beschikbaar. De huur is "
+
+#: txl.php:222
+msgid ""
+"<p>(you can also <span id=\"txl_different_period\">select a different "
+"period</span>)</p>"
+msgstr ""
+"<p>(u kunt ook  <span id=\"txl_different_period\">een andere periode "
+"selecteren</span>)</p>"
+
+#: txl.php:225
+msgid ""
+"<br>Select a different period.<br>(Holidays start and end on Monday or "
+"Friday)"
+msgstr ""
+"<br>Selecteer een andere periode. <br>(een vakantie begint op een maandag of "
+"een vrijdag)"
+
+#: txl.php:251
+msgid "rent for this period: "
+msgstr "huur voor de periode is: "
+
+#: txl.php:267
+#, fuzzy
+msgid "Our holiday"
+msgstr "Uw vakantie"
+
+#: txl.php:267
+msgid "days"
+msgstr "dagen"
+
+#: txl.php:268
+#, fuzzy
+msgid "rent is"
+msgstr "de huur is"
+
+#: txl.php:278
+msgid "back"
+msgstr "terug"
+
+#: txl.php:280
+msgid "my contact details"
+msgstr "mijn gegevens"
+
+#: txl.php:282
+msgid "Ms."
+msgstr "mevrouw"
+
+#: txl.php:282
+msgid "Mr."
+msgstr "de heer"
+
+#: txl.php:283
+msgid "full name"
+msgstr "naam en voornaam"
+
+#: txl.php:284
+msgid "addres"
+msgstr "adres"
+
+#: txl.php:285
+msgid "postcode"
+msgstr "postcode"
+
+#: txl.php:286
+msgid "city"
+msgstr "stad"
+
+#: txl.php:287
+msgid "email"
+msgstr "e-mail"
+
+#: txl.php:288
+msgid "phone"
+msgstr "telefoon"
+
+#: txl.php:291
+#, fuzzy
+msgid "my group is"
+msgstr "per groep"
+
+#: txl.php:299
+#, fuzzy
+msgid "persons"
+msgstr "per persoon"
+
+#: txl.php:301
+msgid "extra's"
+msgstr "Service"
+
+#: txl.php:310
+msgid "total extra's"
+msgstr "Totaal service"
+
+#: txl.php:312
+msgid "additional comments"
+msgstr "Aanvullende opmerkingen"
+
+#, fuzzy
+#~ msgid "Our holiday from "
+#~ msgstr "Uw vakantie"

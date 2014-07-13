@@ -1,12 +1,12 @@
 <?php
 /**
  * @package txl booking
- * @version 0.1
+ * @version 0.2
  */
 /*
 Plugin Name: txl booking
 Plugin URI: http://texellastminutes.nl/plugin
-Description: a plugin to handle bookings
+Description: a plugin to handle bookings for a holiday home
 Author: Hans-Peter van Leeuwen
 Version: 0.1
 Author URI: http://ha.nspeter.nl
@@ -36,8 +36,8 @@ register_deactivation_hook(__FILE__, 'txl_deactivation');
 
 
 function txl_init() {
-  load_plugin_textdomain( 'txl', false, plugin_basename('txl/languages') );
-
+	load_plugin_textdomain( 'txl', false, plugin_basename('txl/languages') );
+	setlocale(LC_TIME,get_locale());
 }
 add_action('init', 'txl_init');
 
@@ -78,7 +78,6 @@ add_action( 'wp_enqueue_scripts', 'txl_enqueue_script' );
 
 
 function txl_insert_here(){
-
 	$txl_date=get_option('txl_date');
 	$txl_week=get_option('txl_week');
 	$txl_weekend=get_option('txl_weekend');
@@ -99,8 +98,8 @@ function txl_insert_here(){
 
 	$txl_prices_table.='</table>';
 
-	return '<label for="txl_start">van</label><input name="txl_start" id="txl_start">
-			<label>tot</label><input name="txl_end" id="txl_end"><br>
+	return '<label for="txl_start">'.__('from',txl).'</label><input name="txl_start" id="txl_start">
+			<label>'.__('till',txl).'</label><input name="txl_end" id="txl_end"><br>
 			<button id="txl_check">'.__('Check live availablilty and price', txl).'</button>
 			
 			<div id="txl_dialog" class="wp-dialog" title="'.__('Your holiday', txl).'">
@@ -109,7 +108,7 @@ function txl_insert_here(){
 				<div id="txl_dialog_datepicker"></div>
 				
 				<div id="txl_price"></div>
-				<button id="txl_booknow">book now!</button>					
+				<button id="txl_booknow">'.__('Book now!',txl).'</button>					
 				
 				<div id="txl_showprices">'.__('Show prices per', txl).'
 					<span id="txl_btn_perweek" class="txl_btn">'.__('week', txl).'</span>/
@@ -130,7 +129,11 @@ function txl_insert_here(){
 		
 			</div> <!-- .dialog-->' ;
 }
+/* Set locale to Dutch */
+setlocale(LC_ALL, 'nl_NL');
 
+/* Output: vrijdag 22 december 1978 */
+echo strftime("%A %e %B %Y", mktime(0, 0, 0, 12, 22, 1978));
 add_shortcode( 'bookable', 'txl_insert_here' );
 
 function txl_ajax(){
@@ -145,7 +148,7 @@ function txl_ajax(){
 	$end=$_POST['end'];
 	
 	if (!(is_numeric($start)&&is_numeric($end))){
-		$txl_msg='Choose a start date and an end date';
+		$txl_msg=__('Choose a start date and an end date',txl);
 		$txl_error=true;
 	}
 	
@@ -167,7 +170,7 @@ function txl_ajax(){
 
 		if (count_posts($txl_meta)>0){
 			$txl_error=true;
-			$txl_msg='Selected period is not available.';
+			$txl_msg=__('Selected period is not available.',txl);
 			}
 		
 		if (!$txl_error){
@@ -188,7 +191,7 @@ function txl_ajax(){
 
 			if (count_posts($txl_meta)>0){
 				$txl_error=true;
-				$txl_msg='Selected period is not available.';
+				$txl_msg=__('Selected period is not available.',txl);
 			}
 			if (!$txl_error){
 				$txl_meta = array(
@@ -207,7 +210,7 @@ function txl_ajax(){
 				);
 				if (count_posts($txl_meta)>0){
 					$txl_error=true;
-					$txl_msg='Selected period is not available.';
+					$txl_msg=__('Selected period is not available.',txl);
 				}				
 			}	
 		}
@@ -219,10 +222,10 @@ function txl_ajax(){
 		
 		txl_settimezone();
 		
-		$txl_msg.='Success! The period from '.date('l, j F Y ', $start).' till '. date('l, j F Y ', $end).' ('.$days.' days) is available. Rent is '.$costa.'<p>(you can also <span id="txl_different_period">select a different period</span>)</p>';
+		$txl_msg.=__('Success! The period from ',txl).date('l, j F Y ', $start).__(' till ',txl). date('l, j F Y ', $end).' ('.$days.__(' days) is available. Rent is ',txl).$costa.__('<p>(you can also <span id="txl_different_period">select a different period</span>)</p>',txl);
 	}
 	else{
-		$txl_msg=$txl_msg.'<br>Select a different period.<br>(Holidays start and end on Monday or Friday)';
+		$txl_msg=$txl_msg.__('<br>Select a different period.<br>(Holidays start and end on Monday or Friday)',txl);
 	}
 	
 	$response=array(
@@ -264,8 +267,8 @@ function txl_booking_form (){
 	echo '
 	<form id="bookingform">
 	<!--start: '.$start.', end: '.$end.'-->
-	<h4>Our holiday from '.date('l, j F Y ', $start).' till '. date('l, j F Y ', $end).' ('.$days.' days)</h4>
-	<p>rent is '.costa($start, $end).'</p>
+	<h4>'.__('Our holiday',txl).' '.__('from',txl).' '.date('l, j F Y ', $start).' '.__('till',txl).' '. date('l, j F Y ', $end).' ('.$days.' '.__('days',txl).')</h4>
+	<p>'.__('rent is',txl).' '.costa($start, $end).'</p>
 
 	<input type="hidden" name="start" value="'.date('l, j F Y ', $start).'"> 
 	<input type="hidden" name="end" value="'. date('l, j F Y ', $end).'">
@@ -288,7 +291,7 @@ function txl_booking_form (){
 	<tr><td class="clean">'.__('phone',txl).': </td><td class="clean"><input name="phone" required><span></span></td></tr>
 	</table>
 
-	<p>my group is <select name="persons">
+	<p>'.__('my group is',txl).' <select name="persons">
 	<option selected>';
 	
 	for ($i=get_option('txl_max_people'); $i>1; $i--){
@@ -296,9 +299,9 @@ function txl_booking_form (){
 		<option>';
 	}
 	echo'1</option>
-	</select> persons</p>
+	</select> '.__('persons',txl).'</p>
 	
-	<h4>extra\'s</h4>
+	<h4>'.__('extra\'s',txl).'</h4>
 	<table class="txl_clean_table">
 	';
 	
@@ -307,13 +310,13 @@ function txl_booking_form (){
 		echo '<tr><td class="extras_description"><input type="checkbox" name="extras[]" '.$readonly.' class="extracheckbox" value="'.$row['description'].'" data-price="'.$row['price'].'" data-perperson="'.$row['perperson'].'" data-perstay="'.$row['perstay'].'"> '.$row['description'] .'</td><td class="extras_price">'.number_format($row['price'],2).'</td><td class="extras_per">('.__( $row['perstay'], 'txl' ).', '.__($row['perperson'],'txl').') </td><td class="extras_subtotal"><input class="subtotal" name="'.$row['description'].'" readonly="readonly"></td></tr>';
 	}
 	
-	echo '<tr><td colspan="3" class="clean">total extras:</td"><td id="totalextras"> <input id="total" name="totalextras" readonly="readonly">
-	</table>
-	additional comments:<br>
+	echo '<tr><td colspan="3" class="clean">'.__('total extra\'s',txl).':</td"><td id="totalextras"> <input id="total" name="totalextras" readonly="readonly">
+	</table>'.
+	__('additional comments',txl).':<br>
 	<textarea name="comments"></textarea>
 	
 	</form>
-	<button id="txl_booknow_final" style="display: inline-block;">book now!</button>
+	<button id="txl_booknow_final" style="display: inline-block;">'.__('book now!',txl).'</button>
 	';
 	die();
 	
@@ -322,10 +325,10 @@ function txl_booking_form (){
 function onlytofillpofile(){
 // sorry about this. I do not know any other way to get these entries in the .po file 
 
-	_e('per stay', txl);
-	_e('per day', txl);
-	_e('per group', txl);
-	_e('per person', txl);
+	__('per stay', txl);
+	__('per day', txl);
+	__('per group', txl);
+	__('per person', txl);
 }//onlytofillpofile
 
 function txl_get_occ(){
@@ -620,9 +623,6 @@ function save_booking_meta($postid){
 }
 
 add_action( 'pre_post_update', 'save_booking_meta' ); 
-
-
-
 
 function flip($arr)
 {
