@@ -37,10 +37,17 @@ register_deactivation_hook(__FILE__, 'txl_deactivation');
 
 function txl_init() {
 	load_plugin_textdomain( 'txl', false, plugin_basename('txl/languages') );
-	setlocale(LC_TIME,get_locale());
-}
-add_action('init', 'txl_init');
 
+	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'){
+		setlocale(LC_TIME,__('us_us',txl));
+		}
+	else{
+		setlocale(LC_TIME,getlocale());
+		$txl_date_format_complete="%A, %e %B %Y ";
+	}
+}
+
+add_action('init', 'txl_init');
 
 add_action( 'admin_menu', 'register_my_custom_menu_page' );
 
@@ -129,11 +136,7 @@ function txl_insert_here(){
 		
 			</div> <!-- .dialog-->' ;
 }
-/* Set locale to Dutch */
-setlocale(LC_ALL, 'nl_NL');
 
-/* Output: vrijdag 22 december 1978 */
-echo strftime("%A %e %B %Y", mktime(0, 0, 0, 12, 22, 1978));
 add_shortcode( 'bookable', 'txl_insert_here' );
 
 function txl_ajax(){
@@ -222,7 +225,7 @@ function txl_ajax(){
 		
 		txl_settimezone();
 		
-		$txl_msg.=__('Success! The period from ',txl).date('l, j F Y ', $start).__(' till ',txl). date('l, j F Y ', $end).' ('.$days.__(' days) is available. Rent is ',txl).$costa.__('<p>(you can also <span id="txl_different_period">select a different period</span>)</p>',txl);
+		$txl_msg.=__('Success! The period from ',txl).txl_strftime('%A, %e %B %Y', $start).__(' till ',txl). txl_strftime('%A, %e %B %Y', $end).' ('.$days.__(' days) is available. Rent is ',txl).$costa.__('<p>(you can also <span id="txl_different_period">select a different period</span>)</p>',txl);
 	}
 	else{
 		$txl_msg=$txl_msg.__('<br>Select a different period.<br>(Holidays start and end on Monday or Friday)',txl);
@@ -267,7 +270,7 @@ function txl_booking_form (){
 	echo '
 	<form id="bookingform">
 	<!--start: '.$start.', end: '.$end.'-->
-	<h4>'.__('Our holiday',txl).' '.__('from',txl).' '.date('l, j F Y ', $start).' '.__('till',txl).' '. date('l, j F Y ', $end).' ('.$days.' '.__('days',txl).')</h4>
+	<h4>'.__('Our holiday',txl).' '.__('from',txl).' '.txl_strftime('%A, %e %B %Y', $start).' '.__('till',txl).' '. txl_strftime('%A, %e %B %Y', $end).' ('.$days.' '.__('days',txl).')</h4>
 	<p>'.__('rent is',txl).' '.costa($start, $end).'</p>
 
 	<input type="hidden" name="start" value="'.date('l, j F Y ', $start).'"> 
@@ -316,7 +319,7 @@ function txl_booking_form (){
 	<textarea name="comments"></textarea>
 	
 	</form>
-	<button id="txl_booknow_final" style="display: inline-block;">'.__('book now!',txl).'</button>
+	<button id="txl_booknow_final" style="display: inline-block;">'.__('Book now!',txl).'</button>
 	';
 	die();
 	
@@ -648,4 +651,11 @@ function txl_settimezone(){
 	if ($timezoneoffset>0){$timezoneoffset='+'.$timezoneoffset;}
 	$timezoneoffset='Etc/GMT'.$timezoneoffset;
 	date_default_timezone_set($timezoneoffset);
+}
+
+function txl_strftime($txl_format, $txl_timestamp){
+	if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+		$txl_format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $txl_format);
+	}
+	return(strftime($txl_format,$txl_timestamp));
 }
